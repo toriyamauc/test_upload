@@ -2,50 +2,25 @@
 <html>
 <head>
   <meta charset="UTF-8">
-  <title>File Comparator</title>
-  <script defer src="script.js"></script>
+  <title>CIF Viewer</title>
   <script src="https://3Dmol.org/build/3Dmol-min.js"></script>
+  <script defer src="script.js"></script>
+  <style>
+    body { font-family: sans-serif; padding: 2rem; }
+    .viewer-container { display: flex; gap: 2rem; flex-wrap: wrap; }
+    .viewer { width: 400px; height: 400px; border: 1px solid #ccc; }
+  </style>
 </head>
 <body>
-  <h1>Upload 1 or 2 Files</h1>
-  <input type="file" id="file1"><br><br>
-  <input type="file" id="file2"><br><br>
-  <button onclick="processFiles()">Compare</button>
-  <pre id="output"></pre>
-  
-  <h1>Structure Viewer</h1>
-  <div style="width: 600px; height: 400px;" id="viewer"></div>
+  <h1>Upload CIF Files to View Structures</h1>
+  <p>Supports uploading one or two .cif files.</p>
+  <input type="file" id="file1" accept=".cif"> File 1<br><br>
+  <input type="file" id="file2" accept=".cif"> File 2<br><br>
+  <button onclick="loadStructures()">Load Structures</button>
 
-  <script>
-    const element = document.getElementById("viewer");
-    const viewer = $3Dmol.createViewer(element, { backgroundColor: "white" });
-
-    const cifData = `
-data_structure
-_symmetry_space_group_name_H-M 'P 1'
-_cell_length_a    3.18
-_cell_length_b    3.18
-_cell_length_c    20.00
-_cell_angle_alpha 90
-_cell_angle_beta  90
-_cell_angle_gamma 120
-_symmetry_Int_Tables_number 1
-_chemical_name_common 'graphene'
-loop_
-_atom_site_label
-_atom_site_type_symbol
-_atom_site_fract_x
-_atom_site_fract_y
-_atom_site_fract_z
-C1 C 0.00000 0.00000 0.5
-C2 C 0.33333 0.66667 0.5
-    `;
-
-    viewer.addModel(cifData, "cif");
-    viewer.setStyle({}, {stick: {}, sphere: {scale: 0.3}});
-    viewer.zoomTo();
-    viewer.render();
-  </script>
-
+  <div class="viewer-container">
+    <div id="viewer1" class="viewer"></div>
+    <div id="viewer2" class="viewer"></div>
+  </div>
 </body>
 </html>
