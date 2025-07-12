@@ -8,22 +8,22 @@ function readFile(file) {
   });
 }
 
-async function processFiles() {
+function renderCIF(cifData, viewerId) {
+  const element = document.getElementById(viewerId);
+  element.innerHTML = ""; // clear previous content
+  const viewer = $3Dmol.createViewer(element, { backgroundColor: "white" });
+  viewer.addModel(cifData, "cif");
+  viewer.setStyle({}, { stick: {}, sphere: { scale: 0.3 } });
+  viewer.zoomTo();
+  viewer.render();
+}
+
+async function loadStructures() {
   const file1 = document.getElementById("file1").files[0];
   const file2 = document.getElementById("file2").files[0];
 
-  const [text1, text2] = await Promise.all([readFile(file1), readFile(file2)]);
+  const [cif1, cif2] = await Promise.all([readFile(file1), readFile(file2)]);
 
-  let output = "";
-  if (text1 && text2) {
-    output = (text1 === text2) ? "Files are identical!" : "Files differ.";
-  } else if (text1) {
-    output = `File 1 length: ${text1.length} characters`;
-  } else if (text2) {
-    output = `File 2 length: ${text2.length} characters`;
-  } else {
-    output = "No files uploaded.";
-  }
-
-  document.getElementById("output").textContent = output;
+  if (cif1) renderCIF(cif1, "viewer1");
+  if (cif2) renderCIF(cif2, "viewer2");
 }
